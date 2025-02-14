@@ -3,7 +3,7 @@ import Task from "./Task";
 
 const TaskCard = ({ cardTitle, listOfTasks = [], onClick }) => {
   return (
-    <div className="w-full h-72 bg-white rounded-xl p-7 transform transition-all duration-300 hover:scale-[1.04] cursor-pointer">
+    <div className="w-full h-72 bg-white rounded-xl p-7 transform transition-all duration-300 cursor-pointer">
       <h3 className="font-semibold text-lg">{cardTitle}</h3>
       {listOfTasks.map((task, index) => (
         <Task

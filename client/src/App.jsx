@@ -4,6 +4,9 @@ import Nav from "./components/Nav";
 import TaskCard from "./components/TaskCard";
 import CategoryCard from "./components/CategoryCard";
 import Modal from "./components/Modal";
+import NewCategoryModal from "./components/NewCategoryModal";
+import TasksModal from "./components/TasksModal";
+import Button from "./components/Button";
 
 const App = () => {
   const tasks1 = [
@@ -32,32 +35,10 @@ const App = () => {
     },
   ];
 
-  const buttonRef = useRef(null);
-  const [position, setPosition] = useState({ top: 0, left: 0 });
   const [createNewCategoryToggle, setCreateNewCategoryToggle] = useState(false);
+  const [tasksModalToggle, setTasksModalToggle] = useState(false);
+  const [miscellaneous, setMiscellaneous] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (buttonRef.current) {
-        const rect = buttonRef.current.getBoundingClientRect();
-        setPosition({ top: rect.top, left: rect.left });
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    window.addEventListener("resize", handleScroll);
-    handleScroll();
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
-    };
-  }, []);
-
-  const handleOpenModal = (event) => {
-    setCreateNewCategoryToggle((prev) => !prev);
-    console.log("X:", event.clientX, "Y:", event.clientY);
-  };
   return (
     <>
       <Nav />
@@ -67,57 +48,59 @@ const App = () => {
             <TaskCard
               cardTitle="To do"
               listOfTasks={tasks1}
-              onClick={handleOpenModal}
+              onClick={() => setTasksModalToggle((prev) => !prev)}
             />
             <TaskCard
               cardTitle="To Buy"
               listOfTasks={tasks2}
-              onClick={handleOpenModal}
+              onClick={() => setMiscellaneous((prev) => !prev)}
             />
             <div className="w-full h-72 bg-white rounded-xl"></div>
           </div>
         </section>
-
         <section className="mt-8 flex flex-col items-center">
           <div className="w-[94%]">
             <div className="flex gap-3">
-              <button
-                ref={buttonRef}
-                className="bg-amber-400 text-white p-1 rounded-md cursor-pointer"
-                onClick={handleOpenModal}
+              <Button
+                onClick={() => setCreateNewCategoryToggle((prev) => !prev)}
               >
                 Create New Category
-              </button>
-              <button className="bg-green-500 text-white p-1 rounded-md cursor-pointer">
+              </Button>
+              <Button backgroundColor="bg-green-500">
                 Arrange the Sequence
-              </button>
-
-              <p>Top: {position.top.toFixed(2)}px</p>
-              <p>Left: {position.left.toFixed(2)}px</p>
+              </Button>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 cursor-pointer">
               <CategoryCard
                 listOfTasks={tasks1}
                 categoryName="Basic Gadget Needs"
-                onClick={handleOpenModal}
+                onClick={() => setMiscellaneous((prev) => !prev)}
               />
               <CategoryCard
                 listOfTasks={tasks2}
                 categoryName="Laptop Hardwares"
-                onClick={handleOpenModal}
+                onClick={() => setMiscellaneous((prev) => !prev)}
               />
               <CategoryCard
                 listOfTasks={tasks1}
                 categoryName="Skills"
-                onClick={handleOpenModal}
+                onClick={() => setMiscellaneous((prev) => !prev)}
               />
             </div>
           </div>
         </section>
-        <Modal
+        {/* <Modal
+          miscelleneous={miscellaneous}
+          closeModal={() => setMiscellaneous((prev) => !prev)}
+        /> */}
+        <NewCategoryModal
           createNewCategoryToggle={createNewCategoryToggle}
-          handleOpenModal={handleOpenModal}
+          closeModal={() => setCreateNewCategoryToggle((prev) => !prev)}
+        />
+        <TasksModal
+          tasksModalToggle={tasksModalToggle}
+          closeModal={() => setTasksModalToggle((prev) => !prev)}
         />
       </main>
     </>
